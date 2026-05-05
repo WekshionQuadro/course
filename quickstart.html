@@ -6,6 +6,52 @@
   <title>Aiogram: Быстрый старт</title>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
+  <style>
+    /* Контейнер для правильного позиционирования кнопки */
+    .code-block-container {
+      position: relative;
+      margin: 15px 0;
+    }
+
+    /* Стили для блока с кодом с двойной рамкой */
+    .code-block {
+      background-color: #0f0f1a;
+      padding: 15px;
+      padding-top: 35px;
+      /* Отступ сверху, чтобы кнопка не перекрывала код */
+      border-radius: 8px;
+      border: 3px double #2a2a4a;
+      /* Та самая двойная рамка */
+      overflow-x: auto;
+    }
+
+    .code-block code {
+      color: #a6e22e;
+      font-family: "Fira Code", Consolas, monospace;
+      font-size: 14px;
+    }
+
+    /* Стили для кнопки копирования */
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #3ea6ff;
+      color: #0f0f1a;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: bold;
+      transition: background-color 0.2s;
+    }
+
+    .copy-btn:hover {
+      background-color: #2b8ce0;
+      color: white;
+    }
+  </style>
 </head>
 
 <body>
@@ -20,13 +66,19 @@
     <h1>Генератор базового кода Эхо-Бота</h1>
 
     <div class="admonition-info">
-      <p>Перед запуском убедитесь, что вы прочитали <a href="https://core.telegram.org/bots/api" target="_blank"
-          style="color: #3ea6ff;">Официальную документацию Telegram</a>.</p>
+      <strong>Что такое Эхо-бот?</strong>
+      <p>Эхо-бот — это простейшая программа, которая повторяет (как эхо) любое текстовое сообщение, отправленное
+        пользователем. Это аналог "Hello, World!" в мире разработки Telegram-ботов. Он идеально подходит для того, чтобы
+        убедиться, что ваш код работает, а токен указан верно.</p>
     </div>
 
     <h2>Код вашего бота:</h2>
 
-    <pre><code id="bot-code">import asyncio
+    <div class="code-block-container">
+      <button class="copy-btn" onclick="copyCode()">Копировать код</button>
+
+      <div class="code-block">
+        <pre><code id="bot-code">import asyncio
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import CommandStart
 
@@ -48,6 +100,8 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())</code></pre>
+      </div>
+    </div>
 
     <button id="generate-btn" onclick="insertToken()">Подставить свой токен в код</button>
 
