@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Aiogram: Быстрый старт</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-link">Основы</a>
+    <a href="reference.html" class="nav-link">Справочник API</a>
+    <a href="quickstart.html" class="nav-link">Быстрый старт</a>
+  </nav>
+
+  <div class="container">
+    <h1>Генератор базового кода Эхо-Бота</h1>
+
+    <div class="admonition-info">
+      <p>Перед запуском убедитесь, что вы прочитали <a href="https://core.telegram.org/bots/api" target="_blank"
+          style="color: #3ea6ff;">Официальную документацию Telegram</a>.</p>
+    </div>
+
+    <h2>Код вашего бота:</h2>
+
+    <pre><code id="bot-code">import asyncio
+from aiogram import Bot, Dispatcher, types
+from aiogram.filters import CommandStart
+
+TOKEN = "YOUR_TOKEN_HERE"
+
+bot = Bot(token=TOKEN)
+dp = Dispatcher()
+
+@dp.message(CommandStart())
+async def handle_start(message: types.Message):
+    await message.answer("Привет! Я эхо-бот.")
+
+@dp.message()
+async def echo_handler(message: types.Message):
+    await message.answer(message.text)
+
+async def main():
+    await dp.start_polling(bot)
+
+if __name__ == "__main__":
+    asyncio.run(main())</code></pre>
+
+    <button id="generate-btn" onclick="insertToken()">Подставить свой токен в код</button>
+
+  </div>
+
+</body>
+
+</html>

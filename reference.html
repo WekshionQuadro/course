@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Aiogram: Справочник API</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .code-block {
+      background-color: #0f0f1a;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #2a2a4a;
+      margin: 15px 0;
+      overflow-x: auto;
+    }
+
+    .code-block code {
+      color: #a6e22e;
+      font-family: "Fira Code", Consolas, monospace;
+      font-size: 14px;
+    }
+
+    .text-block p {
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+
+    .nested-table {
+      margin-top: 15px;
+      font-size: 14px;
+      background-color: #0f0f1a;
+      width: 100%;
+    }
+
+    .nested-table th {
+      background-color: #2a2a4a;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-link">Основы</a>
+    <a href="reference.html" class="nav-link">Справочник API</a>
+    <a href="quickstart.html" class="nav-link">Быстрый старт</a>
+  </nav>
+
+  <div class="container">
+    <h1>Справочник методов и терминов</h1>
+
+    <p style="background-color: #16213e; padding: 10px; border-radius: 5px;">
+      <strong>Быстрая навигация:</strong>
+      <a href="#terms" style="color: #3ea6ff; margin-right: 10px;">Терминология</a> |
+      <a href="#examples" style="color: #3ea6ff; margin-right: 10px;">Примеры кода</a> |
+      <a href="#methods" style="color: #3ea6ff;">Базовые методы API</a>
+    </p>
+
+    <h2 id="terms" style="border-bottom: 1px solid #2a2a4a; padding-bottom: 10px;">Ключевые термины</h2>
+    <dl>
+      <dt><strong>Bot (Класс)</strong></dt>
+      <dd>Главный класс для взаимодействия с Telegram Bot API. Все запросы к серверам Telegram происходят через
+        экземпляры этого класса. Требует токен при инициализации.</dd>
+
+      <dt><strong>Handler (Обработчик)</strong></dt>
+      <dd>Асинхронная функция, которая реагирует на определенные события (апдейты) от Telegram. Хэндлеры срабатывают,
+        когда пользователь пишет текст, нажимает кнопку или отправляет фото.</dd>
+
+      <dt><strong>Dispatcher (Диспетчер)</strong></dt>
+      <dd>Корневой элемент маршрутизации. Он принимает все входящие обновления и решает, какому именно хэндлеру их
+        передать в зависимости от фильтров.</dd>
+
+      <dt><strong>Router (Роутер)</strong></dt>
+      <dd>Модульный обработчик. Позволяет разбивать логику большого бота на разные файлы.</dd>
+    </dl>
+
+    <h2 id="examples" style="border-bottom: 1px solid #2a2a4a; padding-bottom: 10px;">Примеры реализации</h2>
+    <div class="text-block">
+
+      <h3>Пример создания базового хэндлера</h3>
+      <div class="admonition-info">
+        <p>Для того чтобы бот ответил на текстовое сообщение пользователя, необходимо создать функцию-обработчик и
+          обернуть ее в соответствующий декоратор.</p>
+      </div>
+      <div class="code-block">
+        <pre><code>from aiogram import Router, types
+from aiogram.filters import Command
+
+router = Router()
+
+@router.message(Command("start"))
+async def cmd_start(message: types.Message):
+    # Бот ответит в тот же чат, откуда пришла команда /start
+    await message.answer("Привет! Я бот.")</code></pre>
+      </div>
+
+      <h3>Обычные клавиатуры (ReplyKeyboardMarkup)</h3>
+      <div class="admonition-info">
+        <p>Это кнопки, которые заменяют стандартную клавиатуру на устройстве пользователя. Они отправляют текст от лица
+          юзера.</p>
+      </div>
+      <div class="code-block">
+        <pre><code>from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+
+@router.message(Command("menu"))
+async def show_menu(message: types.Message):
+    kb = ReplyKeyboardMarkup(
+        keyboard=[[KeyboardButton(text="О нас"), KeyboardButton(text="Контакты")]],
+        resize_keyboard=True # Делает кнопки компактными
+    )
+    await message.answer("Выберите пункт меню:", reply_markup=kb)</code></pre>
+      </div>
+
+      <h3>Инлайн-кнопки (Callbacks)</h3>
+      <div class="admonition-info">
+        <strong>Работа с инлайн-кнопками (Callbacks):</strong>
+        <p>Когда пользователь нажимает инлайн-кнопку под сообщением, Telegram отправляет апдейт типа
+          <code>CallbackQuery</code>. Вы <strong>обязаны</strong> ответить на него с помощью
+          <code>callback.answer()</code>, иначе кнопка у пользователя будет "висеть" в состоянии загрузки.</p>
+      </div>
+      <div class="code-block">
+        <pre><code>@router.callback_query(F.data == "buy_item")
+async def handle_buy_button(callback: types.CallbackQuery):
+    # 1. Убираем "часики" загрузки на нажатой кнопке
+    await callback.answer("Товар добавлен в корзину!")
+    
+    # 2. Изменяем текст сообщения, к которому была прикреплена кнопка
+    await callback.message.edit_text("Корзина обновлена. Что дальше?")</code></pre>
+      </div>
+    </div>
+
+    <h2 id="methods" style="border-bottom: 1px solid #2a2a4a; padding-bottom: 10px;">Справочник методов Telegram Bot API
+    </h2>
+    <table>
+      <tr>
+        <th>Метод API</th>
+        <th>Описание и параметры метода</th>
+      </tr>
+      <tr>
+        <td><code>Bot.send_message()</code></td>
+        <td>
+          Базовый метод отправки текстового сообщения. Требует явного указания чата.
+          <table class="nested-table">
+            <tr>
+              <th>Параметр</th>
+              <th>Тип</th>
+              <th>Описание</th>
+            </tr>
+            <tr>
+              <td>chat_id</td>
+              <td>Integer/String</td>
+              <td>ID чата или @username канала</td>
+            </tr>
+            <tr>
+              <td>text</td>
+              <td>String</td>
+              <td>Текст сообщения (от 1 до 4096 символов)</td>
+            </tr>
+            <tr>
+              <td>parse_mode</td>
+              <td>String</td>
+              <td>Тип разметки (HTML, MarkdownV2)</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td><code>Message.answer()</code></td>
+        <td>
+          Алиас. Отправляет сообщение в тот же чат, не требуя ID.
+          <table class="nested-table">
+            <tr>
+              <th>Параметр</th>
+              <th>Тип</th>
+              <th>Описание</th>
+            </tr>
+            <tr>
+              <td>text</td>
+              <td>String</td>
+              <td>Текст ответа</td>
+            </tr>
+            <tr>
+              <td>reply_markup</td>
+              <td>Keyboard</td>
+              <td>Обычная или инлайн-клавиатура</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td><code>Message.reply()</code></td>
+        <td>
+          Алиас. Отправляет сообщение с визуальным "ответом" (цитированием).
+          <table class="nested-table">
+            <tr>
+              <th>Параметр</th>
+              <th>Тип</th>
+              <th>Описание</th>
+            </tr>
+            <tr>
+              <td>text</td>
+              <td>String</td>
+              <td>Текст ответа</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td><code>Bot.send_photo()</code></td>
+        <td>
+          Отправка изображения по ID файла, ссылке или с диска.
+          <table class="nested-table">
+            <tr>
+              <th>Параметр</th>
+              <th>Тип</th>
+              <th>Описание</th>
+            </tr>
+            <tr>
+              <td>chat_id</td>
+              <td>Integer/String</td>
+              <td>Целевой чат</td>
+            </tr>
+            <tr>
+              <td>photo</td>
+              <td>InputFile/String</td>
+              <td>Фотография для отправки</td>
+            </tr>
+            <tr>
+              <td>caption</td>
+              <td>String</td>
+              <td>Текст подписи (до 1024 символов)</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td><code>Message.answer_photo()</code></td>
+        <td>
+          Алиас. Отправляет фото в текущий чат.
+          <table class="nested-table">
+            <tr>
+              <th>Параметр</th>
+              <th>Тип</th>
+              <th>Описание</th>
+            </tr>
+            <tr>
+              <td>photo</td>
+              <td>InputFile/String</td>
+              <td>Фотография</td>
+            </tr>
+            <tr>
+              <td>caption</td>
+              <td>String</td>
+              <td>Текст подписи к фото</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td><code>Bot.send_video()</code></td>
+        <td>
+          Отправка видеофайлов (mp4).
+          <table class="nested-table">
+            <tr>
+              <th>Параметр</th>
+              <th>Тип</th>
+              <th>Описание</th>
+            </tr>
+            <tr>
+              <td>chat_id</td>
+              <td>Integer/String</td>
+              <td>Целевой чат</td>
+            </tr>
+            <tr>
+              <td>video</td>
+              <td>InputFile/String</td>
+              <td>Видеофайл</td>
+            </tr>
+            <tr>
+              <td>duration</td>
+              <td>Integer</td>
+              <td>Длительность видео в секундах</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td><code>Bot.send_document()</code></td>
+        <td>
+          Отправка файлов любого типа (без сжатия).
+          <table class="nested-table">
+            <tr>
+              <th>Параметр</th>
+              <th>Тип</th>
+              <th>Описание</th>
+            </tr>
+            <tr>
+              <td>chat_id</td>
+              <td>Integer/String</td>
+              <td>Целевой чат</td>
+            </tr>
+            <tr>
+              <td>document</td>
+              <td>InputFile/String</td>
+              <td>Файл документа</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td><code>Bot.delete_message()</code></td>
+        <td>
+          Удаление сообщения в чате (требуются права администратора).
+          <table class="nested-table">
+            <tr>
+              <th>Параметр</th>
+              <th>Тип</th>
+              <th>Описание</th>
+            </tr>
+            <tr>
+              <td>chat_id</td>
+              <td>Integer/String</td>
+              <td>ID чата, где находится сообщение</td>
+            </tr>
+            <tr>
+              <td>message_id</td>
+              <td>Integer</td>
+              <td>ID удаляемого сообщения</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td><code>Bot.edit_message_text()</code></td>
+        <td>
+          Изменяет текст уже отправленного ботом сообщения.
+          <table class="nested-table">
+            <tr>
+              <th>Параметр</th>
+              <th>Тип</th>
+              <th>Описание</th>
+            </tr>
+            <tr>
+              <td>text</td>
+              <td>String</td>
+              <td>Новый текст сообщения</td>
+            </tr>
+            <tr>
+              <td>chat_id</td>
+              <td>Integer/String</td>
+              <td>Чат, где находится сообщение</td>
+            </tr>
+            <tr>
+              <td>message_id</td>
+              <td>Integer</td>
+              <td>ID редактируемого сообщения</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td><code>CallbackQuery.answer()</code></td>
+        <td>
+          Ответ на нажатие инлайн-кнопки (снимает "часики").
+          <table class="nested-table">
+            <tr>
+              <th>Параметр</th>
+              <th>Тип</th>
+              <th>Описание</th>
+            </tr>
+            <tr>
+              <td>text</td>
+              <td>String</td>
+              <td>Текст всплывающего уведомления (toast)</td>
+            </tr>
+            <tr>
+              <td>show_alert</td>
+              <td>Boolean</td>
+              <td>Показывать ли уведомление как окно с кнопкой OK</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td><code>CallbackQuery.message.answer()</code></td>
+        <td>
+          Отправляет новое сообщение в ответ на нажатие кнопки.
+          <table class="nested-table">
+            <tr>
+              <th>Параметр</th>
+              <th>Тип</th>
+              <th>Описание</th>
+            </tr>
+            <tr>
+              <td>text</td>
+              <td>String</td>
+              <td>Текст нового сообщения</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td><code>Bot.send_chat_action()</code></td>
+        <td>
+          Показывает статус "печатает...", "загружает фото..." и т.д.
+          <table class="nested-table">
+            <tr>
+              <th>Параметр</th>
+              <th>Тип</th>
+              <th>Описание</th>
+            </tr>
+            <tr>
+              <td>chat_id</td>
+              <td>Integer/String</td>
+              <td>Целевой чат</td>
+            </tr>
+            <tr>
+              <td>action</td>
+              <td>String</td>
+              <td>Тип действия (typing, upload_photo, etc.)</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td><code>Bot.ban_chat_member()</code></td>
+        <td>
+          Исключает (банит) пользователя из группы или канала.
+          <table class="nested-table">
+            <tr>
+              <th>Параметр</th>
+              <th>Тип</th>
+              <th>Описание</th>
+            </tr>
+            <tr>
+              <td>chat_id</td>
+              <td>Integer/String</td>
+              <td>ID группы или канала</td>
+            </tr>
+            <tr>
+              <td>user_id</td>
+              <td>Integer</td>
+              <td>ID блокируемого пользователя</td>
+            </tr>
+            <tr>
+              <td>until_date</td>
+              <td>Integer</td>
+              <td>Unix time окончания бана</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td><code>Bot.restrict_chat_member()</code></td>
+        <td>
+          Ограничивает права пользователя (например, режим read-only).
+          <table class="nested-table">
+            <tr>
+              <th>Параметр</th>
+              <th>Тип</th>
+              <th>Описание</th>
+            </tr>
+            <tr>
+              <td>chat_id</td>
+              <td>Integer/String</td>
+              <td>ID группы</td>
+            </tr>
+            <tr>
+              <td>user_id</td>
+              <td>Integer</td>
+              <td>ID пользователя</td>
+            </tr>
+            <tr>
+              <td>permissions</td>
+              <td>ChatPermissions</td>
+              <td>Объект с набором разрешений</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td><code>Bot.set_my_commands()</code></td>
+        <td>
+          Устанавливает меню команд (при вводе /).
+          <table class="nested-table">
+            <tr>
+              <th>Параметр</th>
+              <th>Тип</th>
+              <th>Описание</th>
+            </tr>
+            <tr>
+              <td>commands</td>
+              <td>List</td>
+              <td>Список объектов BotCommand</td>
+            </tr>
+            <tr>
+              <td>scope</td>
+              <td>BotCommandScope</td>
+              <td>Область видимости команд</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td><code>Bot.send_media_group()</code></td>
+        <td>
+          Отправляет альбом из нескольких фото или видео.
+          <table class="nested-table">
+            <tr>
+              <th>Параметр</th>
+              <th>Тип</th>
+              <th>Описание</th>
+            </tr>
+            <tr>
+              <td>chat_id</td>
+              <td>Integer/String</td>
+              <td>Целевой чат</td>
+            </tr>
+            <tr>
+              <td>media</td>
+              <td>List</td>
+              <td>Список медиа-объектов (от 2 до 10 шт)</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td><code>Message.forward()</code></td>
+        <td>
+          Алиас. Пересылает сообщение в другой чат с указанием автора.
+          <table class="nested-table">
+            <tr>
+              <th>Параметр</th>
+              <th>Тип</th>
+              <th>Описание</th>
+            </tr>
+            <tr>
+              <td>chat_id</td>
+              <td>Integer/String</td>
+              <td>ID чата, куда переслать сообщение</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <p style="margin-top: 30px;"><br><br><br></p>
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Основы разработки ботов</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .highlight-box {
+      border-left: 4px solid #3ea6ff;
+      background-color: #16213e;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .text-block {
+      margin-bottom: 20px;
+      text-align: justify;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="progress-container">
+    <div id="myBar"></div>
+  </div>
+
+  <nav>
+    <a href="index.html" class="nav-link">Основы</a>
+    <a href="reference.html" class="nav-link">Справочник API</a>
+    <a href="quickstart.html" class="nav-link">Быстрый старт</a>
+  </nav>
+
+  <div class="container">
+    <h1>Введение в разработку Telegram-ботов</h1>
+
+    <div class="highlight-box">
+      <p><strong>Telegram-боты</strong> — это специальные аккаунты в мессенджере, которыми управляет не человек, а
+        программный алгоритм. Они способны автоматически обрабатывать текстовые сообщения, нажатия кнопок, отправлять
+        медиафайлы и бесперебойно взаимодействовать с пользователями 24/7, выполняя роль виртуальных помощников.</p>
+    </div>
+
+    <h2 style="border-bottom: 1px solid #2a2a4a; padding-bottom: 10px;">Почему это суперактуально сегодня?</h2>
+    <div class="text-block">
+      <p>В эпоху мобильного интернета пользователи устали скачивать десятки отдельных приложений для каждой задачи.
+        Мессенджеры стали универсальной средой обитания, и боты идеально встраиваются в эту экосистему. Вот главные
+        причины их популярности:</p>
+      <ul>
+        <li><strong>Единое окно:</strong> Пользователь может заказать еду, купить билеты или узнать погоду, не покидая
+          привычный чат Telegram.</li>
+        <li><strong>Экономия ресурсов:</strong> Разработка бота обходится бизнесу значительно дешевле и быстрее, чем
+          создание полноценного мобильного приложения (iOS/Android).</li>
+        <li><strong>Автоматизация:</strong> Боты снимают нагрузку с колл-центров и службы поддержки, мгновенно отвечая
+          на типовые вопросы клиентов.</li>
+      </ul>
+    </div>
+
+    <h2>Что такое aiogram?</h2>
+    <div class="text-block">
+      <p><strong>Aiogram</strong> — это современный, быстрый и полностью асинхронный фреймворк для создания
+        Telegram-ботов на языке программирования Python. Благодаря грамотному использованию встроенной библиотеки
+        <code>asyncio</code>, aiogram не блокирует выполнение кода при ожидании ответа от серверов Telegram. Это
+        позволяет одному боту легко и без задержек обрабатывать тысячи запросов от разных пользователей одновременно,
+        что делает этот фреймворк индустриальным стандартом.
+      </p>
+    </div>
+
+    <h2>Используемые технологии</h2>
+    <table>
+      <tr>
+        <th>Логотип</th>
+        <th>Технология</th>
+        <th>Описание</th>
+      </tr>
+      <tr>
+        <td style="text-align: center;">
+          <img src="https://docs.aiogram.dev/en/v3.27.0/_static/logo.png" alt="aiogram logo" width="50">
+        </td>
+        <td><strong>aiogram 3.x</strong></td>
+        <td>Основной фреймворк для разработки высоконагруженных ботов.</td>
+      </tr>
+      <tr>
+        <td style="text-align: center;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" alt="Python logo"
+            width="40">
+        </td>
+        <td><strong>Python</strong></td>
+        <td>Базовый язык программирования, на котором пишется логика.</td>
+      </tr>
+      <tr>
+        <td style="text-align: center;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram logo"
+            width="40">
+        </td>
+        <td><strong>Telegram API</strong></td>
+        <td>Платформа и набор интерфейсов для работы наших ботов.</td>
+      </tr>
+    </table>
+
+    <p><br><br><br><br><br><br>Прокрутите страницу, чтобы увидеть работу прогресс-бара сверху.<br><br><br><br><br><br>
+    </p>
+  </div>
+
+  <script>
+    window.onscroll = function () { updateProgressBar() };
+
+    function updateProgressBar() {
+      var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      var scrolled = (winScroll / height) * 100;
+      document.getElementById("myBar").style.width = scrolled + "%";
+    }
+  </script>
+
+</body>
+
+</html>
