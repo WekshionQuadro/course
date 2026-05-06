@@ -1,4 +1,3 @@
-// Функция подстановки токена (уже была)
 function insertToken() {
   let userToken = prompt("Шаг 1: Введите токен, который вам выдал BotFather:");
 
@@ -14,19 +13,14 @@ function insertToken() {
   }
 }
 
-// Новая функция для копирования кода в буфер обмена
 function copyCode() {
-  // Получаем текст из блока с кодом
   let codeText = document.getElementById("bot-code").innerText;
 
-  // Используем API буфера обмена для копирования
   navigator.clipboard.writeText(codeText)
     .then(function () {
-      // Выводим уведомление об успехе
       alert("Код успешно скопирован в буфер обмена!");
     })
     .catch(function (err) {
-      // Обработка ошибки, если браузер блокирует копирование
       alert("Произошла ошибка при копировании: " + err);
     });
 }

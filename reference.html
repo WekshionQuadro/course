@@ -5,38 +5,6 @@
   <meta charset="UTF-8">
   <title>Aiogram: Справочник API</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    .code-block {
-      background-color: #0f0f1a;
-      padding: 15px;
-      border-radius: 8px;
-      border: 1px solid #2a2a4a;
-      margin: 15px 0;
-      overflow-x: auto;
-    }
-
-    .code-block code {
-      color: #a6e22e;
-      font-family: "Fira Code", Consolas, monospace;
-      font-size: 14px;
-    }
-
-    .text-block p {
-      margin-bottom: 15px;
-      line-height: 1.6;
-    }
-
-    .nested-table {
-      margin-top: 15px;
-      font-size: 14px;
-      background-color: #0f0f1a;
-      width: 100%;
-    }
-
-    .nested-table th {
-      background-color: #2a2a4a;
-    }
-  </style>
 </head>
 
 <body>
@@ -50,14 +18,14 @@
   <div class="container">
     <h1>Справочник методов и терминов</h1>
 
-    <p style="background-color: #16213e; padding: 10px; border-radius: 5px;">
+    <p class="quick-nav-panel">
       <strong>Быстрая навигация:</strong>
-      <a href="#terms" style="color: #3ea6ff; margin-right: 10px;">Терминология</a> |
-      <a href="#examples" style="color: #3ea6ff; margin-right: 10px;">Примеры кода</a> |
-      <a href="#methods" style="color: #3ea6ff;">Базовые методы API</a>
+      <a href="#terms">Терминология</a> |
+      <a href="#examples">Примеры кода</a> |
+      <a href="#methods">Базовые методы API</a>
     </p>
 
-    <h2 id="terms" style="border-bottom: 1px solid #2a2a4a; padding-bottom: 10px;">Ключевые термины</h2>
+    <h2 id="terms" class="section-title">Ключевые термины</h2>
     <dl>
       <dt><strong>Bot (Класс)</strong></dt>
       <dd>Главный класс для взаимодействия с Telegram Bot API. Все запросы к серверам Telegram происходят через
@@ -75,7 +43,7 @@
       <dd>Модульный обработчик. Позволяет разбивать логику большого бота на разные файлы.</dd>
     </dl>
 
-    <h2 id="examples" style="border-bottom: 1px solid #2a2a4a; padding-bottom: 10px;">Примеры реализации</h2>
+    <h2 id="examples" class="section-title">Примеры реализации</h2>
     <div class="text-block">
 
       <h3>Пример создания базового хэндлера</h3>
@@ -117,7 +85,8 @@ async def show_menu(message: types.Message):
         <strong>Работа с инлайн-кнопками (Callbacks):</strong>
         <p>Когда пользователь нажимает инлайн-кнопку под сообщением, Telegram отправляет апдейт типа
           <code>CallbackQuery</code>. Вы <strong>обязаны</strong> ответить на него с помощью
-          <code>callback.answer()</code>, иначе кнопка у пользователя будет "висеть" в состоянии загрузки.</p>
+          <code>callback.answer()</code>, иначе кнопка у пользователя будет "висеть" в состоянии загрузки.
+        </p>
       </div>
       <div class="code-block">
         <pre><code>@router.callback_query(F.data == "buy_item")
@@ -130,7 +99,7 @@ async def handle_buy_button(callback: types.CallbackQuery):
       </div>
     </div>
 
-    <h2 id="methods" style="border-bottom: 1px solid #2a2a4a; padding-bottom: 10px;">Справочник методов Telegram Bot API
+    <h2 id="methods" class="section-title">Справочник методов Telegram Bot API
     </h2>
     <table>
       <tr>
@@ -545,7 +514,7 @@ async def handle_buy_button(callback: types.CallbackQuery):
       </tr>
     </table>
 
-    <p style="margin-top: 30px;"><br><br><br></p>
+    <p class="bottom-spacer"><br><br><br></p>
   </div>
 
 </body>
