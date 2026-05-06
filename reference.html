@@ -9,6 +9,10 @@
 
 <body>
 
+  <div class="progress-container">
+    <div id="myBar"></div>
+  </div>
+
   <nav>
     <a href="index.html" class="nav-link">Основы</a>
     <a href="reference.html" class="nav-link">Справочник API</a>
@@ -516,6 +520,17 @@ async def handle_buy_button(callback: types.CallbackQuery):
 
     <p class="bottom-spacer"><br><br><br></p>
   </div>
+
+  <script>
+    window.onscroll = function () { updateProgressBar() };
+
+    function updateProgressBar() {
+      var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      var scrolled = (winScroll / height) * 100;
+      document.getElementById("myBar").style.width = scrolled + "%";
+    }
+  </script>
 
 </body>
 
