@@ -6,6 +6,16 @@
   <title>Aiogram: Быстрый старт</title>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
+
+  <style>
+    .special-warning {
+      background-color: #2a1616;
+      border-left: 4px solid #ff3e3e;
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-radius: 0 8px 8px 0;
+    }
+  </style>
 </head>
 
 <body>
@@ -21,7 +31,7 @@
   </nav>
 
   <div class="container">
-    <h1>Генератор базового кода Эхо-Бота</h1>
+    <h1 style="color: #61dafb; text-shadow: 0 0 5px rgba(97, 218, 251, 0.3);">Генератор базового кода Эхо-Бота</h1>
 
     <div class="admonition-info">
       <strong>Что такое Эхо-бот?</strong>
@@ -29,6 +39,14 @@
         пользователем. Это аналог "Hello, World!" в мире разработки Telegram-ботов. Он идеально подходит для того, чтобы
         убедиться, что ваш код работает, а токен указан верно.</p>
     </div>
+
+    <h2>Алгоритм первого запуска:</h2>
+    <ol style="margin-bottom: 20px;">
+      <li>Скопируйте сгенерированный код из блока ниже.</li>
+      <li>Создайте файл <code>main.py</code> на вашем компьютере и вставьте туда код.</li>
+      <li>Установите библиотеку, выполнив в терминале <code>pip install aiogram</code>.</li>
+      <li>Запустите бота командой <code>python main.py</code>.</li>
+    </ol>
 
     <h2>Код вашего бота:</h2>
 
@@ -62,6 +80,11 @@ if __name__ == "__main__":
     </div>
 
     <button id="generate-btn" onclick="insertToken()">Подставить свой токен в код</button>
+
+    <div class="special-warning">
+      <strong>Важно:</strong> Никогда не публикуйте свой токен в открытом доступе (например, на GitHub), иначе любой
+      желающий сможет управлять вашим ботом!
+    </div>
 
   </div>
 
